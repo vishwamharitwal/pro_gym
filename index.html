@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Believers | The Elite Monolith Gym</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700;800&family=Manrope:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            /* Colors: The "Liquid Gold" Palette */
+            --bg-color: #000000;
+            --surface-low: #0a0a0a;
+            --surface-high: #111111;
+            --surface-highest: #1a1a1a;
+            --on-surface: #e5e2e1;
+            --primary: #f2cc00;
+            --primary-container: #d2b100;
+            --secondary: #eac249;
+            --outline-variant: rgba(153, 144, 124, 0.15);
+
+            /* Typography */
+            --font-headline: 'Lexend', sans-serif;
+            --font-body: 'Manrope', sans-serif;
+
+            /* Spacing */
+            --section-padding: 8rem 2rem;
+            --container-max-width: 1440px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--on-surface);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- Animations --- */
+        [data-reveal] {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        [data-reveal].revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- PRELOADER --- */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
+        }
+
+        .preloader video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .preloader.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        body.loading {
+            overflow: hidden;
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--outline-variant);
+            transform: translateY(-100%);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        header.scrolled {
+            transform: translateY(0);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo-img {
+            height: 50px;
+            width: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+        }
+
+        .logo-text {
+            font-family: var(--font-headline);
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 3rem;
+        }
+
+        nav a {
+            color: var(--on-surface);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 4rem;
+            background: linear-gradient(90deg, #000000 30%, transparent 100%),
+                url('hero.png');
+            background-size: cover;
+            background-position: center top;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-family: var(--font-headline);
+            font-size: clamp(3.5rem, 8vw, 6rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.04em;
+            margin-bottom: 2rem;
+            color: var(--on-surface);
+            text-transform: uppercase;
+        }
+
+        .hero h1 span {
+            display: block;
+            color: var(--primary);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            max-width: 500px;
+            margin-bottom: 3rem;
+            color: rgba(229, 226, 225, 0.8);
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-container));
+            color: #000;
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-radius: 4px;
+            letter-spacing: 0.05em;
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+
+        /* --- Services Section --- */
+        .section {
+            padding: var(--section-padding);
+            max-width: var(--container-max-width);
+            margin: 0 auto;
+        }
+
+        .section-header {
+            margin-bottom: 5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .section-title {
+            font-family: var(--font-headline);
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+        }
+
+        .grid-services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background-color: var(--surface-low);
+            padding: 3rem;
+            border-radius: 4px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card:hover {
+            background-color: var(--surface-high);
+            transform: translateY(-10px);
+        }
+
+        .service-card h3 {
+            font-family: var(--font-headline);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            text-transform: uppercase;
+        }
+
+        .service-card p {
+            color: rgba(229, 226, 225, 0.7);
+        }
+
+        .service-card .number {
+            position: absolute;
+            top: -1rem;
+            right: 0rem;
+            font-size: 6rem;
+            font-family: var(--font-headline);
+            font-weight: 800;
+            color: rgba(242, 204, 0, 0.05);
+            pointer-events: none;
+        }
+
+        /* --- About Section --- */
+        .about {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 6rem;
+        }
+
+        .about-image {
+            background: var(--surface-highest);
+            height: 600px;
+            border-radius: 4px;
+            background-image: url('about.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .about h2 {
+            font-family: var(--font-headline);
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+        }
+
+        .about p {
+            font-size: 1.1rem;
+            color: rgba(229, 226, 225, 0.8);
+            margin-bottom: 2rem;
+        }
+
+        /* --- Contact CTA --- */
+        .cta {
+            padding: 8rem 2rem;
+            text-align: center;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, var(--surface-high), var(--surface-highest));
+            padding: 6rem;
+            text-align: center;
+            border-radius: 4px;
+            border: 1px solid var(--outline-variant);
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .cta-box h2 {
+            font-family: var(--font-headline);
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: -0.04em;
+            line-height: 1;
+        }
+
+        .cta-box p {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            color: rgba(229, 226, 225, 0.7);
+        }
+
+        /* --- Footer --- */
+        footer {
+            padding: 4rem;
+            border-top: 1px solid var(--outline-variant);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: rgba(229, 226, 225, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            header {
+                padding: 1rem 2rem;
+            }
+
+            .hero {
+                padding: 0 2rem;
+            }
+
+            .about {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .hero h1 {
+                font-size: 4rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+            }
+
+            header {
+                padding: 0.5rem 1rem;
+            }
+
+            .logo-img {
+                height: 45px;
+            }
+
+            .logo-text {
+                font-size: 1.1rem;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .section {
+                padding: 4rem 1.5rem;
+            }
+
+            .cta-box {
+                padding: 3rem 1.5rem;
+            }
+
+            .cta-box h2 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="loading">
+    <div class="preloader" id="preloader">
+        <video id="introVideo" autoplay muted playsinline>
+            <source src="intro.mp4" type="video/mp4">
+        </video>
+    </div>
+
+
+    <header>
+        <div class="header-left">
+            <img src="logo.png" alt="Pro Believers Logo" class="logo-img">
+            <div class="logo-text">PRO BELIEVERS</div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" id="home">
+            <div class="hero-content" data-reveal>
+                <h1>Train like a <span>Pro.</span></h1>
+                <p>Unleash your potential in a sanctuary designed for performance. The Elite Monolith experience awaits.
+                </p>
+                <a href="#contact" class="btn-primary">Join the Gym</a>
+            </div>
+        </section>
+
+        <section class="section" id="services" data-reveal>
+            <div class="section-header">
+                <h2 class="section-title">Superior <br> Services</h2>
+            </div>
+            <div class="grid-services">
+                <div class="service-card">
+                    <span class="number">01</span>
+                    <h3>Strength Training</h3>
+                    <p>Elite-grade equipment for maximizing metabolic stress and mechanical tension.</p>
+                </div>
+                <div class="service-card">
+                    <span class="number">02</span>
+                    <h3>Metabolic Cardio</h3>
+                    <p>High-performance endurance systems to incinerate fat and enhance recovery.</p>
+                </div>
+                <div class="service-card">
+                    <span class="number">03</span>
+                    <h3>Personal Coaching</h3>
+                    <p>Bespoke neuro-performance programming tailored to your unique physiology.</p>
+                </div>
+                <div class="service-card">
+                    <span class="number">04</span>
+                    <h3>Elite Recovery</h3>
+                    <p>Scientific restoration protocols to ensure consistent peak performance.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="about" data-reveal>
+            <div class="about">
+                <div class="about-image"></div>
+                <div class="about-text">
+                    <h2>Our Philosophy</h2>
+                    <p>Pro Believers isn't just a gym; it's a statement. We reject the cluttered, high-volume models of
+                        standard fitness centers to provide an exclusive environment where focus is the primary
+                        currency.</p>
+                    <p>Utilizing high-end editorial aesthetics and state-of-the-art biomechanics, we've built a monolith
+                        of performance for those who truly believe in the grind.</p>
+                    <a href="#contact" class="btn-primary">Our Story</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta" id="contact">
+            <div class="cta-box">
+                <h2>Ready to <br> Evolve?</h2>
+                <p>Limited memberships available for serious athletes and dreamers.</p>
+                <a href="https://wa.me/919887569321?text=Hello%21%20I%20want%20to%20join%20the%20gym.%20Give%20me%20the%20details.%20Ready%20to%20evolve%21" class="btn-primary" target="_blank">Get Access Now</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Pro Believers. All rights reserved.</p>
+        <p>Built for performance | The Elite Monolith</p>
+    </footer>
+
+    <script>
+        // Scroll reveal for header
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            const preloader = document.getElementById('preloader');
+            
+            // Only show header if preloader is gone and we've scrolled
+            if (window.scrollY > 50 && preloader.classList.contains('fade-out')) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Preloader Logic
+        const introVideo = document.getElementById('introVideo');
+        const preloader = document.getElementById('preloader');
+
+        introVideo.onended = () => {
+            preloader.classList.add('fade-out');
+            document.body.classList.remove('loading');
+            
+            // Trigger initial reveals after intro
+            setTimeout(() => {
+                document.querySelectorAll('[data-reveal]').forEach(el => {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < window.innerHeight) {
+                        el.classList.add('revealed');
+                    }
+                });
+            }, 500);
+        };
+
+        // Fallback: If video fails, hide preloader after 5s
+        setTimeout(() => {
+            if (!preloader.classList.contains('fade-out')) {
+                preloader.classList.add('fade-out');
+                document.body.classList.remove('loading');
+            }
+        }, 6000);
+
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
+    </script>
+</body>
+
+</html>
