@@ -353,57 +353,109 @@
             letter-spacing: 0.1em;
         }
 
-        /* Responsive */
+        /* --- Responsive Improvements --- */
         @media (max-width: 1024px) {
+            :root {
+                --section-padding: 6rem 1.5rem;
+            }
             header {
                 padding: 1rem 2rem;
             }
-
             .hero {
                 padding: 0 2rem;
             }
-
             .about {
                 grid-template-columns: 1fr;
-                gap: 3rem;
+                gap: 4rem;
             }
-
-            .hero h1 {
-                font-size: 4rem;
+            .about-image {
+                height: 450px;
             }
         }
 
         @media (max-width: 768px) {
             nav {
-                display: none;
+                display: none; /* Hide full nav on mobile for simplicity */
             }
-
             header {
-                padding: 0.5rem 1rem;
+                padding: 0.8rem 1.5rem;
+                justify-content: center; /* Center logo on mobile */
             }
-
+            .header-left {
+                gap: 1rem;
+            }
             .logo-img {
-                height: 45px;
+                height: 40px;
+                width: 40px;
             }
-
             .logo-text {
                 font-size: 1.1rem;
             }
-
-            .hero h1 {
-                font-size: 3rem;
+            .hero {
+                background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('hero.png');
+                background-size: cover;
+                background-position: 70% center; /* Shift image to show the person better on vertical screens */
+                justify-content: center;
+                text-align: center;
+                padding: 0 1.5rem;
             }
-
-            .section {
+            .hero-content {
+                max-width: 100%;
+            }
+            .hero h1 {
+                font-size: 3.5rem;
+                margin-bottom: 1.5rem;
+            }
+            .hero p {
+                font-size: 1.1rem;
+                margin: 0 auto 2.5rem;
+            }
+            .section-header {
+                margin-bottom: 3rem;
+                text-align: center;
+                justify-content: center;
+            }
+            .section-title {
+                font-size: 2.2rem;
+            }
+            .grid-services {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .service-card {
+                padding: 2.5rem 2rem;
+            }
+            .about h2 {
+                font-size: 2.2rem;
+                text-align: center;
+            }
+            .about-text {
+                text-align: center;
+            }
+            .cta-box {
                 padding: 4rem 1.5rem;
             }
-
-            .cta-box {
+            .cta-box h2 {
+                font-size: 2.8rem;
+            }
+            footer {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
                 padding: 3rem 1.5rem;
             }
+        }
 
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
             .cta-box h2 {
-                font-size: 2.5rem;
+                font-size: 2.2rem;
+            }
+            .btn-primary {
+                width: 100%; /* Full width buttons for easier clicking on small phones */
+                padding: 1.2rem 2rem;
             }
         }
     </style>
