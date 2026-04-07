@@ -98,7 +98,7 @@
             top: 0;
             width: 100%;
             z-index: 1000;
-            padding: 1rem 4rem;
+            padding: var(--header-padding);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -117,11 +117,12 @@
             display: flex;
             align-items: center;
             gap: 1.5rem;
+            flex-shrink: 0;
         }
 
         .logo-img {
-            height: 50px;
-            width: 50px;
+            height: 45px;
+            width: 45px;
             object-fit: cover;
             border-radius: 50%;
             border: 2px solid var(--primary);
@@ -130,7 +131,7 @@
         .logo-text {
             font-family: var(--font-headline);
             font-weight: 800;
-            font-size: 1.4rem;
+            font-size: 1.25rem;
             color: var(--primary);
             text-transform: uppercase;
             letter-spacing: -0.02em;
@@ -145,8 +146,8 @@
         nav a {
             color: var(--on-surface);
             text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
+            font-size: 0.85rem;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.1em;
             transition: color 0.3s ease;
@@ -154,6 +155,69 @@
 
         nav a:hover {
             color: var(--primary);
+        }
+
+        /* --- MOBILE MENU --- */
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            z-index: 1001;
+            padding: 5px;
+        }
+
+        .hamburger {
+            width: 24px;
+            height: 2px;
+            background: var(--on-surface);
+            position: relative;
+            transition: background 0.3s;
+        }
+
+        .hamburger::before, .hamburger::after {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 2px;
+            background: var(--on-surface);
+            transition: transform 0.3s;
+        }
+
+        .hamburger::before { top: -8px; }
+        .hamburger::after { top: 8px; }
+
+        .menu-toggle.active .hamburger { background: transparent; }
+        .menu-toggle.active .hamburger::before { transform: translateY(8px) rotate(45deg); }
+        .menu-toggle.active .hamburger::after { transform: translateY(-8px) rotate(-45deg); }
+
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            
+            nav {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background: var(--surface-high);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+                box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            }
+
+            nav.active { right: 0; }
+
+            nav ul {
+                flex-direction: column;
+                gap: 3rem;
+                text-align: center;
+            }
+
+            nav a { font-size: 1.5rem; }
+            
+            header { justify-content: space-between; }
         }
 
         /* --- Hero Section --- */
@@ -481,7 +545,10 @@
             <img src="logo.png" alt="Pro Believers Logo" class="logo-img">
             <div class="logo-text">PRO BELIEVERS</div>
         </div>
-        <nav>
+        <div class="menu-toggle" id="mobile-menu">
+            <div class="hamburger"></div>
+        </div>
+        <nav id="navbar">
             <ul>
                 <li><a href="#home">Home</a></li>
                 <li><a href="#services">Services</a></li>
@@ -572,6 +639,23 @@
             } else {
                 header.classList.remove('scrolled');
             }
+        });
+
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('mobile-menu');
+        const navbar = document.getElementById('navbar');
+        const navLinks = document.querySelectorAll('nav a');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navbar.classList.toggle('active');
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navbar.classList.remove('active');
+            });
         });
 
         // Preloader Logic
