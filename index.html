@@ -428,23 +428,34 @@
 
         /* --- Global Mobile Fixes --- */
         @media (max-width: 768px) {
+            header { 
+                padding: 0.8rem 1rem;
+                justify-content: center;
+                /* On mobile, keep header always visible or lower threshold */
+            }
+            .header-left { 
+                gap: 0.8rem; 
+                flex-direction: row; /* stay horizontal */
+                align-items: center; 
+            }
+            .logo-img {
+                height: 35px;
+                width: 35px;
+            }
+            .logo-text {
+                font-size: 1rem;
+                letter-spacing: 0;
+            }
             .hero {
                 background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('hero.png');
-                background-position: center center; /* Center on mobile to see the athlete best */
+                background-position: center center;
                 text-align: center;
                 justify-content: center;
             }
-            .hero-content {
-                max-width: 100%;
-            }
-            .hero p {
-                margin-left: auto;
-                margin-right: auto;
-            }
-            header { justify-content: center; }
-            .header-left { flex-direction: column; gap: 0.5rem; text-align: center; }
+            .hero-content { max-width: 100%; }
+            .hero p { margin: 0 auto 2.5rem; }
             .btn-primary { width: 100%; text-align: center; }
-            footer { flex-direction: column; text-align: center; gap: 1.5rem; }
+            footer { flex-direction: column; text-align: center; gap: 1rem; padding: 2rem 1rem; }
         }
 
         /* Video Preloader Scaling */
@@ -465,7 +476,7 @@
     </div>
 
 
-    <header>
+    <header id="mainHeader">
         <div class="header-left">
             <img src="logo.png" alt="Pro Believers Logo" class="logo-img">
             <div class="logo-text">PRO BELIEVERS</div>
@@ -553,8 +564,10 @@
             const header = document.querySelector('header');
             const preloader = document.getElementById('preloader');
             
-            // Only show header if preloader is gone and we've scrolled
-            if (window.scrollY > 50 && preloader.classList.contains('fade-out')) {
+            // Lower threshold for mobile (20px) vs desktop (50px)
+            const threshold = window.innerWidth < 768 ? 20 : 50;
+            
+            if (window.scrollY > threshold && preloader.classList.contains('fade-out')) {
                 header.classList.add('scrolled');
             } else {
                 header.classList.remove('scrolled');
